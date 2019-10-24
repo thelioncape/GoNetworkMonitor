@@ -1,6 +1,7 @@
 package configstorage
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -24,11 +25,33 @@ func listStorageConfigs() {
 
 // SaveStorageConfig saves the chosen storage config to disk
 func SaveStorageConfig(storage [2]string) {
-	data := []byte(storage[0] + "\n" + storage[1])
-	err := ioutil.WriteFile("storageconfig.cfg", data, 0733)
+	data := []byte(storage[0] + "\n" + storage[1] + "\n")
+	err := ioutil.WriteFile("storageconfig.cfg", data, 0700)
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+// LoadStorageConfig reads the config file in the same directory and returns the storage type and location
+// without the trailing backslash
+func LoadStorageConfig() [2]string {
+	var lines [2]string
+	f, err := os.Open("storageconfig.cfg")
+	if err != nil {
+		log.Fatal(err, "\nThere was an error when reading the configuration file (storageconfig.cfg)")
+	}
+	defer f.Close()
+
+	reader := bufio.NewReader(f)
+	lines[0], err = reader.ReadString('\n')
+	if err != nil {
+		log.Fatal(err, "\nThere was an error when reading the configuration file (storageconfig.cfg)")
+	}
+	lines[1], err = reader.ReadString('\n')
+	check(err)
+
+	return lines
+
 }
 
 // ChooseStorage asks the user for the type of storage they would like to use and the location of the storage
@@ -37,6 +60,7 @@ func ChooseStorage() [2]string {
 	var storage [2]string
 	storage[0] = chooseStorageType()
 	storage[1] = chooseStorageLocation(storage[0])
+	SaveStorageConfig(storage)
 	return storage
 }
 
@@ -58,19 +82,31 @@ func chooseStorageLocation(storagetype string) string {
 
 	default:
 		log.Fatal("Unknown storage type")
-		return ""
 	}
+
+	return ""
 }
 
 func chooseFlatfileLocation() string {
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	fmt.Print("Please enter a directory to store the program data: ")
+	var input string
+	fmt.Scanln(&input)
+
+	path, err := filepath.Abs(input)
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	err = os.MkdirAll(path, 600)
+
+	if err != nil {
+		log.Fatal(err, "\nIssue accessing folder - check permissions")
+	}
+
 	fmt.Println("The file will be stored in the following location")
-	fmt.Println(dir)
-	return dir
+	fmt.Println(path)
+	return path
 }
 
 func getUserChoice() string {
@@ -78,4 +114,10 @@ func getUserChoice() string {
 	var input string
 	fmt.Scanln(&input)
 	return input
+}
+
+func check(err error) {
+	if err != nil {
+		log.Fatal(err, "There was an error reading the config file (storageconfig.cfg)")
+	}
 }
