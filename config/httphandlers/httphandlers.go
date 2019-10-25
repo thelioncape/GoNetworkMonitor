@@ -28,3 +28,7 @@ func Logopng(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content Type", "image/png")
 	w.Write(contents)
 }
+
+func Auth(w http.ResponseWriter, r *http.Request) {
+
+}
