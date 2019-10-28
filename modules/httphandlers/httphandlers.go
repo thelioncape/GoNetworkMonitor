@@ -1,10 +1,11 @@
 package httphandlers
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/thelioncape/GoNetworkMonitor/modules/authentication"
 )
 
 // Needs to be modified to check for a valid token - if found it should launch straight into the dashboard
@@ -35,8 +36,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		username := r.Form.Get("gnm_login")
 		password := r.Form.Get("gnm_password")
-		fmt.Println(username)
-		fmt.Println(password)
+		authentication.CheckCreds(username, password)
 	} else {
 		http.Redirect(w, r, "/login.html", http.StatusSeeOther)
 	}
