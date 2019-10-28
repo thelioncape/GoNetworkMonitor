@@ -13,14 +13,14 @@ import (
 func storageConfigChooser(text string) string {
 	switch text {
 	case "1":
-		return "Flatfile"
+		return "SQLite"
 	default:
 		return "Undefined"
 	}
 }
 
 func listStorageConfigs() {
-	fmt.Println("1. Flatfile")
+	fmt.Println("1. SQLite")
 }
 
 // SaveStorageConfig saves the chosen storage config to disk
@@ -77,8 +77,8 @@ func chooseStorageType() string {
 func chooseStorageLocation(storagetype string) string {
 	switch storagetype {
 
-	case "Flatfile":
-		return chooseFlatfileLocation()
+	case "SQLite":
+		return chooseSQLiteLocation()
 
 	default:
 		log.Fatal("Unknown storage type")
@@ -87,8 +87,8 @@ func chooseStorageLocation(storagetype string) string {
 	return ""
 }
 
-func chooseFlatfileLocation() string {
-	fmt.Print("Please enter a directory to store the program data: ")
+func chooseSQLiteLocation() string {
+	fmt.Print("Please enter a directory to store the SQLite database: ")
 	var input string
 	fmt.Scanln(&input)
 
@@ -104,7 +104,7 @@ func chooseFlatfileLocation() string {
 		log.Fatal(err, "\nIssue accessing folder - check permissions")
 	}
 
-	fmt.Println("The file will be stored in the following location")
+	fmt.Println("The database will be stored in the following location")
 	fmt.Println(path)
 	return path
 }
