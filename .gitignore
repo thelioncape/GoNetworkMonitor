@@ -12,3 +12,4 @@
 *.out
 
 storageconfig.cfg
+__debug_bin
