@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/thelioncape/GoNetworkMonitor/config"
-	"github.com/thelioncape/GoNetworkMonitor/config/httphandlers"
+	"github.com/thelioncape/GoNetworkMonitor/modules/httphandlers"
 )
 
 func main() {
@@ -29,5 +29,4 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println("Listening on " + port)
 }
