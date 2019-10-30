@@ -34,9 +34,10 @@ func Logopng(w http.ResponseWriter, r *http.Request) {
 func Auth(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		r.ParseForm()
-		username := r.Form.Get("gnm_login")
-		password := r.Form.Get("gnm_password")
-		authentication.CheckCreds(username, password)
+		var creds authentication.CredentialsUnhashed
+		creds.Username = r.Form.Get("gnm_login")
+		creds.Password = r.Form.Get("gnm_password")
+		authentication.CheckCreds(creds)
 	} else {
 		http.Redirect(w, r, "/login.html", http.StatusSeeOther)
 	}
