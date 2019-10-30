@@ -7,9 +7,14 @@ import (
 )
 
 // Credentials is a type that represents a user's credentials (hashed password)
-type Credentials struct {
-	username   string
-	hashedpass string
+type CredentialsUnhashed struct {
+	Username string
+	Password string
+}
+
+type CredentialsHashed struct {
+	Username   string
+	Hashedpass string
 }
 
 // HashPass hashes the given password using the cost defined in this function and returns the hash as []byte
@@ -22,6 +27,6 @@ func HashPass(password []byte) []byte {
 	return hash
 }
 
-func CheckCreds(creds Credentials) bool {
+func CheckCreds(creds CredentialsUnhashed) bool {
 	return true
 }
