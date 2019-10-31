@@ -25,7 +25,7 @@ func main() {
 	http.HandleFunc("/login.html", httphandlers.Loginhtml)
 	http.HandleFunc("/logo.png", httphandlers.Logopng)
 	http.HandleFunc("/auth", httphandlers.Auth)
-	err = http.ListenAndServe(":80", nil)
+	err = http.ListenAndServe(port, nil)
 	if err != nil {
 		log.Fatalln(err)
 	}
