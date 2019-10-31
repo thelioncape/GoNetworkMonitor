@@ -6,12 +6,13 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// Credentials is a type that represents a user's credentials (hashed password)
+// CredentialsUnhashed is a type that represents a user's credentials (plaintext password)
 type CredentialsUnhashed struct {
 	Username string
 	Password string
 }
 
+// CredentialsHashed is a type that represents a user's credentials (hashed password)
 type CredentialsHashed struct {
 	Username   string
 	Hashedpass string
